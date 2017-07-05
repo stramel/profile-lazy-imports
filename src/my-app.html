@@ -1,0 +1,74 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/polymer/lib/utils/import-href.html">
+
+<dom-module id="my-app">
+
+  <template>
+
+  </template>
+
+  <script>
+    class MyApp extends Polymer.Element {
+
+      static get is() { return 'my-app'; }
+
+      static get properties() {
+        return {
+          page: String
+        };
+      }
+
+      median(sequence) {
+        sequence.sort();  // note that direction doesn't matter
+        return sequence[Math.ceil(sequence.length / 2)];
+      }
+
+      ready() {
+        let numbers = [];
+        const boundfn = this.__importHref.bind(this);
+        let i;
+        for(i = 0; i < 10; i++) {
+          numbers = numbers.concat(this.measurePerf(boundfn));
+        }
+
+        console.log(boundfn.name, i, ' run average took', this.median(numbers).toFixed(4));
+      }
+
+      measurePerf(fn) {
+        const numbers = [];
+        for (let i = 1; i < 5; i++) {
+          let t0 = performance.now();
+          fn(i);
+          let t1 = performance.now();
+          numbers.push(t1 - t0);
+        }
+        console.log(fn.name, 'took', this.median(numbers).toFixed(4));
+        return numbers;
+      }
+
+      __importHref(i) {
+        Polymer.importHref(
+                    this.resolveUrl(`${'subdir/'.repeat(i-1)}my-view${i}.html`),
+                    null,
+                    this._showPage404.bind(this),
+                    true);
+      }
+
+      _showPage404() {
+        this.page = 'view404';
+      }
+    }
+
+    window.customElements.define(MyApp.is, MyApp);
+  </script>
+</dom-module>

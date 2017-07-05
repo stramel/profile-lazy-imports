@@ -1,0 +1,78 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/lazy-imports/lazy-imports-mixin.html">
+
+<dom-module id="lazy-import-app">
+  <link rel="lazy-import" group="lazy-1" href="lazy-import1.html">
+  <link rel="lazy-import" group="lazy-2" href="subdir/lazy-import2.html">
+  <link rel="lazy-import" group="lazy-3" href="subdir/subdir/lazy-import3.html">
+  <link rel="lazy-import" group="lazy-4" href="subdir/subdir/subdir/lazy-import4.html">
+
+  <template>
+
+  </template>
+
+  <script>
+    class LazyImportApp extends Polymer.LazyImportsMixin(Polymer.Element) {
+
+      static get is() { return 'lazy-import-app'; }
+
+      static get properties() {
+        return {
+          page: String
+        };
+      }
+
+      median(sequence) {
+        sequence.sort();  // note that direction doesn't matter
+        return sequence[Math.ceil(sequence.length / 2)];
+      }
+
+      ready() {
+        let numbers = [];
+        const boundfn = this.__importLazyGroup.bind(this);
+        let i;
+        for(i = 0; i < 10; i++) {
+          let a = this.measurePerf(boundfn);
+          numbers = numbers.concat(a);
+        }
+        console.log(boundfn.name, i, ' run average took', this.median(numbers).toFixed(4));
+      }
+
+      measurePerf(fn) {
+        const numbers = [];
+        for (let i = 1; i < 5; i++) {
+          let t0 = performance.now();
+          fn(i);
+          let t1 = performance.now();
+          numbers.push(t1 - t0);
+        }
+        console.log(fn.name, 'took', this.median(numbers).toFixed(4));
+        return numbers;
+      }
+
+      __importLazyGroup(i) {
+        this.importLazyGroup(`lazy-${i}`).then((results) => {
+          if (results.failed) {
+            this._showPage404();
+          }
+        });
+      }
+
+      _showPage404() {
+        this.page = 'view404';
+      }
+    }
+
+    window.customElements.define(LazyImportApp.is,LazyImportApp);
+  </script>
+</dom-module>
