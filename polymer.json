@@ -1,11 +1,11 @@
 {
-  "entrypoint": "index.html",
-  "shell": "src/my-app.html",
+  "entrypoint": "index-lazy.html",
+  "shell": "src/lazy-import-app.html",
   "fragments": [
-    "src/my-view1.html",
-    "src/my-view2.html",
-    "src/my-view3.html",
-    "src/my-view404.html"
+    "src/lazy-import1.html",
+    "src/subdir/lazy-import2.html",
+    "src/subdir/subdir/lazy-import3.html",
+    "src/lazy-import404.html"
   ],
   "sources": [
     "src/**/*",
@@ -18,5 +18,16 @@
   ],
   "lint": {
     "rules": ["polymer-2"]
-  }
+  },
+  "builds": [
+    {
+      "preset": "es5-bundled"
+    },
+    {
+      "preset": "es6-bundled"
+    },
+    {
+      "preset": "es6-unbundled"
+    }
+  ]
 }

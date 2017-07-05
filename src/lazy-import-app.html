@@ -15,7 +15,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <link rel="lazy-import" group="lazy-1" href="lazy-import1.html">
   <link rel="lazy-import" group="lazy-2" href="subdir/lazy-import2.html">
   <link rel="lazy-import" group="lazy-3" href="subdir/subdir/lazy-import3.html">
-  <link rel="lazy-import" group="lazy-4" href="subdir/subdir/subdir/lazy-import4.html">
+  <!--<link rel="lazy-import" group="lazy-4" href="subdir/subdir/subdir/lazy-import4.html">-->
 
   <template>
 
@@ -38,14 +38,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       ready() {
-        let numbers = [];
-        const boundfn = this.__importLazyGroup.bind(this);
-        let i;
-        for(i = 0; i < 10; i++) {
-          let a = this.measurePerf(boundfn);
-          numbers = numbers.concat(a);
-        }
-        console.log(boundfn.name, i, ' run average took', this.median(numbers).toFixed(4));
+        // let numbers = [];
+        // const boundfn = this.__importLazyGroup.bind(this);
+        // let i;
+        // for(i = 0; i < 10; i++) {
+        //   let a = this.measurePerf(boundfn);
+        //   numbers = numbers.concat(a);
+        // }
+        // console.log(boundfn.name, i, ' run average took', this.median(numbers).toFixed(4));
       }
 
       measurePerf(fn) {

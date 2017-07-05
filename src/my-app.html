@@ -34,14 +34,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       ready() {
-        let numbers = [];
-        const boundfn = this.__importHref.bind(this);
-        let i;
-        for(i = 0; i < 10; i++) {
-          numbers = numbers.concat(this.measurePerf(boundfn));
-        }
+        // let numbers = [];
+        // const boundfn = this.__importHref.bind(this);
+        // let i;
+        // for(i = 0; i < 10; i++) {
+        //   numbers = numbers.concat(this.measurePerf(boundfn));
+        // }
 
-        console.log(boundfn.name, i, ' run average took', this.median(numbers).toFixed(4));
+        // console.log(boundfn.name, i, ' run average took', this.median(numbers).toFixed(4));
       }
 
       measurePerf(fn) {
